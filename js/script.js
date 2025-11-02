@@ -21,12 +21,12 @@ async function fetchImages(query = "Test") {
         const data = await res.json();
         const gifs = Array.isArray(data?.data) ? data.data : [];
 
-        // Collect original image URLs from the payload
+// Get Image URLs
         images = gifs
             .map((gif) => gif?.images?.original?.url)
             .filter(Boolean);
 
-        // Preview in the browser console
+// Preview in the browser console
         console.log("Original image URLs:", images);
 
         return images;
@@ -37,18 +37,26 @@ async function fetchImages(query = "Test") {
     }
 }
 
-// Run on page load with a default query
-document.addEventListener("DOMContentLoaded", () => {
-    fetchImages();
+// a. Store the gif-container in a variable
+const container = document.querySelector("#gif-container");
 
-    // Optional: allow searching by pressing Enter in the input
-    const input = document.getElementById("search-input");
-    if (input) {
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") {
-                const q = input.value.trim() || "Test";
-                fetchImages(q);
-            }
-        });
+// b. Store the button in a variable
+const button = document.querySelector("#fetch-gif-btn");
+
+// c. Attach an event listener to the button for click events
+button.addEventListener("click", async () => {
+    // Get the search query from the input
+    const input = document.querySelector("#search-input");
+    const query = input ? input.value.trim() || "Test" : "Test";
+    
+    // Fetch images based on the query
+    await fetchImages(query);
+    
+    // Clear existing content
+    container.innerHTML = "";
+    
+    // d. Iterate through images array and add each to the container
+    for (let i = 0; i < images.length; i++) {
+        container.innerHTML += `<img src="${images[i]}" class="col-3 mb-3" alt="GIF">`;
     }
 });
