@@ -36,26 +36,18 @@ async function fetchImages(query = "Test") {
         return images;
     }
 }
-
-// a. Store the gif-container in a variable
 const container = document.querySelector("#gif-container");
 
-// b. Store the button in a variable
+// Select the button
 const button = document.querySelector("#fetch-gif-btn");
-
-// c. Attach an event listener to the button for click events
+// add click event
 button.addEventListener("click", async () => {
-    // Get the search query from the input
     const input = document.querySelector("#search-input");
     const query = input ? input.value.trim() || "Test" : "Test";
     
-    // Fetch images based on the query
+//fetch images
     await fetchImages(query);
-    
-    // Clear existing content
     container.innerHTML = "";
-    
-    // d. Iterate through images array and add each to the container
     for (let i = 0; i < images.length; i++) {
         container.innerHTML += `<img src="${images[i]}" class="col-3 mb-3" alt="GIF">`;
     }
